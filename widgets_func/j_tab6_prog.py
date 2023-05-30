@@ -29,7 +29,7 @@ class T6Window(QWidget, Ui_tab6Form):  # tab5 формы
         super(T6Window, self).__init__()
         self.setupUi(self)
 
-        self.boxYear.insertItems(0, ['2020', '2021', '2022'])
+        self.boxYear.insertItems(0, ['2020', '2021', '2022', '2023'])
         self.boxYear.setCurrentIndex(Const.YEAR - 2020)
         self.boxYear.currentIndexChanged.connect(self.changed_main_year)
         self.dateStart.setDate(datetime.date.fromisoformat(Const.D_START))
@@ -48,13 +48,11 @@ class T6Window(QWidget, Ui_tab6Form):  # tab5 формы
                 print('    ' * tab, el)
         print()
 
-
     def changed_main_year(self):
         Const.YEAR = int(self.boxYear.currentText())
         self.stat.update()
 
 
-#
 if __name__ == '__main__':
     sys.excepthook = except_hook
     app = QApplication(sys.argv)

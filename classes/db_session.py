@@ -10,10 +10,7 @@ from classes.cl_logwriter import LogWriter
 
 
 class Sql:
-    def __init__(self, conn):
-        user = 'sa'
-        password = 'Prestige2011!'
-        str_con = f"""{conn};UID={user};PWD={password};"""
+    def __init__(self, str_con):
         if Const.TEST_MODE:
             print('pyodbc:', str_con)
         self.cnxn = pyodbc.connect(str_con)
@@ -38,11 +35,17 @@ class ConnectDb:
             self.connect_type = cfg.get("Settings", "connect_type")
             if self.connect_type.lower() in ('odbc', ):
                 connect_str = cfg.get("Settings", "odbc")
+            elif self.connect_type.lower() in ('qsqlite', ):
+                db_path = cfg.get("Settings", "db_path")
+                connect_str = f"""Driver=SQLite3 ODBC Driver;DATABASE={db_path}"""
             else:
                 db_name = cfg.get("Settings", "db_name")
                 srv_name = cfg.get("Settings", "srv_name")
                 srv_port = cfg.get("Settings", "srv_port")
-                connect_str = f"Driver=SQL Server;Server={srv_name},{srv_port};Database={db_name}"
+                conn = f"Driver=SQL Server;Server={srv_name},{srv_port};Database={db_name}"
+                user = 'sa'
+                password = 'Prestige2011!'
+                connect_str = f"""{conn};UID={user};PWD={password};"""
 
             Const.YEAR = int(cfg.get("Settings", "l_year"))
             Const.D_START = cfg.get("Settings", "otch_start")

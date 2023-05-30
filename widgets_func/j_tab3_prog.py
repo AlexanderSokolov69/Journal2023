@@ -22,16 +22,21 @@ class Tab3FormWindow(QWidget, Ui_tab3Form):
         self.setupUi(self)
         self.initUi(con)
 
-    def initUi(self, con):
-        self.con = con  # connector to SQL
+    def initUi(self, conl):
+        self.con = conl  # connector to SQL
 
-        self.crs = Courses(con)
-        self.grp = Groups(con)
-        self.grp_tbl = GroupTable(con)
-        self.usrs = Users(con, date_col=7)
+        self.crs = Courses(conl)
+        self.grp = Groups(conl)
+        self.grp_tbl = GroupTable(conl)
+        self.usrs = Users(conl, date_col=7)
 
-        self.tab3_program_box.addItems([f"{item[0]:3}: {item[6]:5} :{item[2]:<8} : {item[1]}"
-                                        for item in self.crs.data if item[8] == Const.YEAR])
+        items = []
+        for item in self.crs.data:
+            if len(item) >= 7 and item[8] == Const.YEAR:
+                items.append(item)
+        if items:
+            self.tab3_program_box.addItems([f"{item[0]:3}: {item[6]:5} :{item[2]:<8} : {item[1]}"
+                                            for item in items])
         self.tab3_program_box.setCurrentIndex(2)
         self.tab3_programm_lcd.display(len(self.crs.data))
         self.tab3_change_program()
@@ -121,8 +126,11 @@ class Tab3FormWindow(QWidget, Ui_tab3Form):
             self.tab3_ned_lcd.display(0)
 
     def tab3_change_program(self):
-        tst  = self.tab3_program_box.currentText()
-        idCourses = int(tst[:tst.find(':')])
+        tst = self.tab3_program_box.currentText()
+        if tst[:tst.find(':')]:
+            idCourses = int(tst[:tst.find(':')])
+        else:
+            idCourses = 0
         sql = f"""select g.id, g.name as 'Группа', c.year as 'Уч.год', u.name as 'ФИО наставника',
                 (select count(*) from group_table gt where gt.idGroups = g.id) as 'Кол-во детей'
                 from groups g
@@ -182,6 +190,11 @@ class Tab3FormWindow(QWidget, Ui_tab3Form):
         self.tab3_change_program()
         self.tab3_change_users()
         self.tab3_check_for_commit()
+
+    def showEvent(self, a0) -> None:
+        self.tab3_refresh_all()
+        print('tab3 show')
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

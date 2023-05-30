@@ -1,6 +1,8 @@
 import sys
+import sqlite3
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 from PyQt5.QtWidgets import QApplication, QTableView
+import pyodbc
 
 app = QApplication(sys.argv)
 db = QSqlDatabase.addDatabase('QSQLITE')

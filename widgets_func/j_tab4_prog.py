@@ -211,7 +211,7 @@ class Tab4FormWindow(QWidget, Ui_tab4Form):
         try:
             self.id = self.rasp.data[self.tab4_rasp_view.currentIndex().row()][0]
             self.idGroups = self.rasp.data[self.tab4_rasp_view.currentIndex().row()][self.IDGROUPS_POS]
-            ngrp = self.rasp.data[self.tab4_rasp_view.currentIndex().row()][1].split()[0]
+            ngrp = str(self.rasp.data[self.tab4_rasp_view.currentIndex().row()][1]).split()[0]
         except IndexError:
             self.id = -1
             self.idGroups = -1

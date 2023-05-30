@@ -408,8 +408,13 @@ class QT5Window(QWidget, Ui_tab5Form):  # tab5 формы
             self.tableView.setModel(None)
 
     def statf_refresh(self):
-        self.lb_date_min.setText(date_us_ru(min([str(val[Const.JRN_DATE]) for val in self.journ.cache])))
-        self.lb_date_max.setText(date_us_ru(max([str(val[Const.JRN_DATE]) for val in self.journ.cache])))
+        if self.journ.cache:
+            self.lb_date_min.setText(date_us_ru(min([str(val[Const.JRN_DATE]) for val in self.journ.cache])))
+            self.lb_date_max.setText(date_us_ru(max([str(val[Const.JRN_DATE]) for val in self.journ.cache])))
+        else:
+            self.lb_date_min.setText("")
+            self.lb_date_max.setText("")
+
         self.lcd_year.display(Const.YEAR)
 
     def eventFilter(self, object, event):
