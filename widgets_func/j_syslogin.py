@@ -1,5 +1,6 @@
 import traceback as tb
 import sys
+from werkzeug.security import generate_password_hash, check_password_hash
 from PyQt5.QtWidgets import QWidget, QApplication
 from classes.cl_const import Const
 from classes.cl_logwriter import LogWriter
@@ -7,6 +8,7 @@ from classes.cl_password import Password
 from classes.cl_users import Users
 from classes.db_session import ConnectDb
 from forms_login.loginDlg import Ui_Dialog
+
 
 
 class LoginDialog(QWidget, Ui_Dialog):
